@@ -132,8 +132,8 @@ func APOSize(input interface{}) interface{} {
 	return bson.M{"$size": input}
 }
 
-// APArrayElemAt return a expression that return the element from the array input with the index index
-func APArrayElemAt(input interface{}, index interface{}) interface{} {
+// APOArrayElemAt return a expression that return the element from the array input with the index index
+func APOArrayElemAt(input interface{}, index interface{}) interface{} {
 	return bson.M{"$arrayElemAt": bson.A{
 		input,
 		index,
