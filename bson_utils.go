@@ -16,23 +16,16 @@
 package mu
 
 import (
-	"reflect"
-
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// MAPipeline return a aggregation pipeline joining the steps that could be a single step or a slice of steps
-func MAPipeline(steps ...interface{}) bson.A {
-	out := bson.A{}
-	for _, step := range steps {
-		if reflect.TypeOf(step).Kind() == reflect.Slice {
-			for _, item := range sliceToSliceOfInterface(step) {
-				out = append(out, item)
-			}
-		} else {
-			out = append(out, step)
+// BsonOptionalExtension return a bson with the same key-values pairs as the orig and extension, if extend is true, otherwise return the orig bson
+func BsonOptionalExtension(extend bool, orig bson.M, extension bson.M) bson.M {
+	if extend {
+		for k, v := range extension {
+			orig[k] = v
 		}
 	}
 
-	return out
+	return orig
 }

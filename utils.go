@@ -15,7 +15,9 @@
 
 package mu
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // sliceToSliceOfInterface convert a interface to a slice of interface
 func sliceToSliceOfInterface(slice interface{}) []interface{} {
