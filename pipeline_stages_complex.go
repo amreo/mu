@@ -86,7 +86,7 @@ func APSearchFilterStage(fields []string, keywords []string) interface{} {
 	}
 
 	//Return the matching stage
-	return APMatch(APOOr(conditions))
+	return APMatch(APOOr(conditions...))
 }
 
 // APGroupAndCountStages return some aggregation stagess that group whatFieldName by what and count the documents
