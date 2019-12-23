@@ -78,7 +78,7 @@ func APOEqual(a interface{}, b interface{}) interface{} {
 
 // APOGreater return a expression that return true if a is greater than b
 func APOGreater(a interface{}, b interface{}) interface{} {
-	return bson.M{"$gr": bson.A{a, b}}
+	return bson.M{"$gt": bson.A{a, b}}
 }
 
 // APORegexFind return a expression that return a regex match
