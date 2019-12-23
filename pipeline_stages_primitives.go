@@ -29,7 +29,9 @@ func MAPipeline(stages ...interface{}) bson.A {
 			continue
 		} else if reflect.TypeOf(stage).Kind() == reflect.Slice {
 			for _, item := range sliceToSliceOfInterface(stage) {
-				out = append(out, item)
+				if item != nil {
+					out = append(out, item)
+				}
 			}
 		} else {
 			out = append(out, stage)
