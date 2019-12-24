@@ -49,3 +49,12 @@ func APOGetCaptureFromRegexMatch(input interface{}, regex string, options string
 		APOArrayElemAt("$$match.captures", captureIndex),
 	)
 }
+
+// APOSumReducer return a expression that return the sum of every expr applied to each argument of input
+// $$this contains the current item
+func APOSumReducer(input interface{}, expr interface{}) interface{} {
+	return APOReduce(input, 0, APOAdd(
+		"$$value",
+		expr,
+	))
+}
