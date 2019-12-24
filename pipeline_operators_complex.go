@@ -34,6 +34,6 @@ func APOMaxWithCmpExpr(cmpExprA interface{}, cmpExprB interface{}, a interface{}
 
 // APOAny return a expression that return true if any element in input satisfy the cond
 // (in the cond the variable this can be used to refer to the current item of the array)
-func APOAny(input interface{}, cond interface{}) interface{} {
-	return APOGreater(APOSize(APOFilter(input, "this", cond)), 0)
+func APOAny(input interface{}, itemName string, cond interface{}) interface{} {
+	return APOGreater(APOSize(APOFilter(input, itemName, cond)), 0)
 }
