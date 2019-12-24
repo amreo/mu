@@ -37,3 +37,13 @@ func APOMaxWithCmpExpr(cmpExprA interface{}, cmpExprB interface{}, a interface{}
 func APOAny(input interface{}, itemName string, cond interface{}) interface{} {
 	return APOGreater(APOSize(APOFilter(input, itemName, cond)), 0)
 }
+
+// APOGetCaptureFromRegexMatch return a capture group from a regex match of given input and regex
+func APOGetCaptureFromRegexMatch(input interface{}, regex string, options string, captureIndex int) {
+	return mu.APOLet(
+		bson.M{
+			"match": mu.APORegexFind(input, regex, options),
+		},
+		mu.APOConvertToDoubleOrZero(mu.APOArrayElemAt("$$match.captures", captureIndex)),
+	),
+}
