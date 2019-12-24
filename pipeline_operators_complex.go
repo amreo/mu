@@ -31,3 +31,9 @@ func APOJoin(list interface{}, sep interface{}) interface{} {
 func APOMaxWithCmpExpr(cmpExprA interface{}, cmpExprB interface{}, a interface{}, b interface{}) interface{} {
 	return APOCond(APOGreater(cmpExprA, cmpExprB), a, b)
 }
+
+// APOAny return a expression that return true if any element in input satisfy the cond
+// (in the cond the variable this can be used to refer to the current item of the array)
+func APOAny(input interface{}, cond interface{}) interface{} {
+	return APOGreater(APOSize(APOFilter(input, "this", cond)), 0)
+}
