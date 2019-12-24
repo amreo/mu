@@ -15,6 +15,8 @@
 
 package mu
 
+import "go.mongodb.org/mongo-driver/bson"
+
 // APOConvertToDoubleOrZero return a expression that convert what to double if it's valid or return zero if invalid or null
 func APOConvertToDoubleOrZero(what interface{}) interface{} {
 	return APOConvertErrorableNullable(what, "double", 0, 0)
@@ -39,11 +41,11 @@ func APOAny(input interface{}, itemName string, cond interface{}) interface{} {
 }
 
 // APOGetCaptureFromRegexMatch return a capture group from a regex match of given input and regex
-func APOGetCaptureFromRegexMatch(input interface{}, regex string, options string, captureIndex int) {
-	return mu.APOLet(
+func APOGetCaptureFromRegexMatch(input interface{}, regex string, options string, captureIndex int) interface{} {
+	return APOLet(
 		bson.M{
-			"match": mu.APORegexFind(input, regex, options),
+			"match": APORegexFind(input, regex, options),
 		},
-		mu.APOConvertToDoubleOrZero(mu.APOArrayElemAt("$$match.captures", captureIndex)),
-	),
+		APOArrayElemAt("$$match.captures", captureIndex),
+	)
 }
