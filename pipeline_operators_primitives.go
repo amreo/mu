@@ -91,6 +91,11 @@ func APOGreater(a interface{}, b interface{}) interface{} {
 	return bson.M{"$gt": bson.A{a, b}}
 }
 
+// APOGreaterOrEqual return a expression that return true if a is greater or equal than b
+func APOGreaterOrEqual(a interface{}, b interface{}) interface{} {
+	return bson.M{"$gte": bson.A{a, b}}
+}
+
 // APORegexFind return a expression that return a regex match
 func APORegexFind(input interface{}, regex string, options string) interface{} {
 	return bson.M{"$regexFind": bson.M{
