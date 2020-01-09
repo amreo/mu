@@ -52,6 +52,11 @@ func APOFloor(what interface{}) interface{} {
 	return bson.M{"$floor": what}
 }
 
+// APOCeil return a expression that return ceil(what)
+func APOCeil(what interface{}) interface{} {
+	return bson.M{"$ceil": what}
+}
+
 // APOMin return a expression that return the min of what
 func APOMin(what ...interface{}) interface{} {
 	return bson.M{"$min": what}
