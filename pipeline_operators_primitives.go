@@ -247,3 +247,8 @@ func APOSum(what interface{}) interface{} {
 func APOMaxAggr(what interface{}) interface{} {
 	return bson.M{"$max": what}
 }
+
+// APOPush return a pushing expression of whats
+func APOPush(what interface{}) interface{} {
+	return bson.M{"$push": what}
+}
