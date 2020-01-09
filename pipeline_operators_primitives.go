@@ -57,6 +57,11 @@ func APOMin(what ...interface{}) interface{} {
 	return bson.M{"$min": what}
 }
 
+// APOMin return a expression that return the max of what
+func APOMax(what ...interface{}) interface{} {
+	return bson.M{"$max": what}
+}
+
 // APOAnd return a expresison that return true if all conds are true
 func APOAnd(conds ...interface{}) interface{} {
 	return bson.M{
@@ -231,4 +236,9 @@ func APOToDouble(input interface{}) interface{} {
 // APOSum return a summing expression of whats
 func APOSum(what interface{}) interface{} {
 	return bson.M{"$sum": what}
+}
+
+// APOMaxAggr return a maximizing expression of whats
+func APOMaxAggr(what interface{}) interface{} {
+	return bson.M{"$max": what}
 }
