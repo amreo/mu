@@ -19,22 +19,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// QOLessThan return a less than condition
-func QOLessThan(value interface{}) interface{} {
-	return bson.M{"$lt": value}
-}
-
-// QOLessThanOrEqual return a less than or equal condition
-func QOLessThanOrEqual(value interface{}) interface{} {
-	return bson.M{"$lte": value}
-}
-
 // QOSize return the size operator
-func QOSize(value interface{}) interface{} {
-	return bson.M{"$size": value}
-}
-
-// QOExpr return the expr operator
-func QOExpr(value interface{}) interface{} {
-	return bson.M{"$expr": value}
+func UOSet(value interface{}) interface{} {
+	return bson.M{"$set": value}
 }
