@@ -19,7 +19,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// QOLessThan return a count stage
+// QOLessThan return a less than condition
 func QOLessThan(value interface{}) interface{} {
 	return bson.M{"$lt": value}
+}
+
+// QOLessEqualThan return a less than or equal condition
+func QOLessEqualThan(value interface{}) interface{} {
+	return bson.M{"$lte": value}
 }
