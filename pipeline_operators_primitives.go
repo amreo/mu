@@ -270,3 +270,11 @@ func APOSplit(what interface{}, sep interface{}) interface{} {
 		sep,
 	}}
 }
+
+// APOIndexOfCp return a expression that split the string what using sep as separator
+func APOIndexOfCp(what interface{}, subString interface{}) interface{} {
+	return bson.M{"$indexOfCP": bson.A{
+		what,
+		subString,
+	}}
+}
