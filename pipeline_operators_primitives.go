@@ -278,3 +278,10 @@ func APOIndexOfCp(what interface{}, subString interface{}) interface{} {
 		subString,
 	}}
 }
+
+// APOTrim return a expression that trim the string what
+func APOTrim(what interface{}) interface{} {
+	return bson.M{"$trim": bson.A{
+		what,
+	}}
+}
