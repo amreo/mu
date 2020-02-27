@@ -290,3 +290,12 @@ func APOTrim(what interface{}) interface{} {
 func APOStrLenCP(what interface{}) interface{} {
 	return bson.M{"$strLenCP": what}
 }
+
+// APOSubstrCP return a expression that return the substring of the string what
+func APOSubstrCP(what interface{}, start interface{}, len interface{}) interface{} {
+	return bson.M{"$substrCP": bson.A{
+		what,
+		start,
+		len,
+	}}
+}
