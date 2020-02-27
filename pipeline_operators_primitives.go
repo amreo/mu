@@ -285,3 +285,8 @@ func APOTrim(what interface{}) interface{} {
 		"input": what,
 	}}
 }
+
+// APOStrLenCP return a expression that return the length of the string what
+func APOStrLenCP(what interface{}) interface{} {
+	return bson.M{"$strLenCP": what}
+}
