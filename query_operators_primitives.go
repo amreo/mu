@@ -19,6 +19,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// QONotEqual return a not equal condition
+func QONotEqual(value interface{}) interface{} {
+	return bson.M{"$ne": value}
+}
+
 // QOLessThan return a less than condition
 func QOLessThan(value interface{}) interface{} {
 	return bson.M{"$lt": value}
