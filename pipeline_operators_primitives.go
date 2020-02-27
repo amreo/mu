@@ -262,3 +262,11 @@ func APOMaxAggr(what interface{}) interface{} {
 func APOPush(what interface{}) interface{} {
 	return bson.M{"$push": what}
 }
+
+// APOSplit return a expression that split the string what using sep as separator
+func APOSplit(what interface{}, sep interface{}) interface{} {
+	return bson.M{"$split": bson.A{
+		what,
+		sep,
+	}}
+}
