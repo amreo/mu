@@ -33,3 +33,8 @@ func QOLessThanOrEqual(value interface{}) interface{} {
 func QOSize(value interface{}) interface{} {
 	return bson.M{"$size": value}
 }
+
+// QOSize return the size operator
+func UOSet(value interface{}) interface{} {
+	return bson.M{"$set": value}
+}
