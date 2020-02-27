@@ -86,6 +86,11 @@ func APOEqual(a interface{}, b interface{}) interface{} {
 	return bson.M{"$eq": bson.A{a, b}}
 }
 
+// APONotEqual return a expression that return true if a and b are inequal, otherwise false
+func APONotEqual(a interface{}, b interface{}) interface{} {
+	return bson.M{"$ne": bson.A{a, b}}
+}
+
 // APOGreater return a expression that return true if a is greater than b
 func APOGreater(a interface{}, b interface{}) interface{} {
 	return bson.M{"$gt": bson.A{a, b}}
