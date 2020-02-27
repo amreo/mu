@@ -28,3 +28,8 @@ func QOLessThan(value interface{}) interface{} {
 func QOLessThanOrEqual(value interface{}) interface{} {
 	return bson.M{"$lte": value}
 }
+
+// QOSize return the size operator
+func QOSize(value interface{}) interface{} {
+	return bson.M{"$size": value}
+}
