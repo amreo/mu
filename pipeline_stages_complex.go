@@ -47,25 +47,25 @@ func APOptionalPagingStage(page int, size int) interface{} {
 		return nil
 	}
 
-	return APFacet(bson.M{
-		"content": MAPipeline(
-			APSkip(page*size),
-			APLimit(size),
-		),
-		"metadata": MAPipeline(
-			APCount("total_elements"),
-			APAddFields(bson.M{
-				"total_pages": APOFloor(APODivide("$total_elements", size)),
-				"size":        APOMin(size, APOSubtract("$total_elements", size*page)),
-				"number":      page,
-			}),
-			APAddFields(bson.M{
-				"empty": APOEqual("$size", 0),
-				"first": page == 0,
-				"last":  APOEqual(page, APOSubtract("$total_pages", 1)),
-			}),
-		),
-	})
+	return MAPipeline(
+		APFacet(bson.M{
+			"Content": MAPipeline(
+				APSkip(page*size),
+				APLimit(size),
+			),
+		}),
+		APAddFields(bson.M{
+			"Metadata.TotalElements": APOSize("$Content"),
+			"Metadata.TotalPages":    APOFloor(APODivide(APOSize("$Content"), size)),
+			"Metadata.Size":          APOMin(size, APOSubtract(APOSize("$Content"), size*page)),
+			"Metadata.Number":        page,
+		}),
+		APAddFields(bson.M{
+			"Metadata.Empty": APOEqual("$Metadata.Size", 0),
+			"Metadata.First": page == 0,
+			"Metadata.Last":  APOEqual(page, APOSubtract("$Metadata.TotalPages", 1)),
+		}),
+	)
 }
 
 // APSearchFilterStage return a aggregation stage that filter the documents when any field match any keyword
