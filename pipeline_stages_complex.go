@@ -49,16 +49,24 @@ func APOptionalPagingStage(page int, size int) interface{} {
 
 	return MAPipeline(
 		APFacet(bson.M{
+			"Metadata": MAPipeline(
+				APCount("TotalElements"),
+			),
 			"Content": MAPipeline(
 				APSkip(page*size),
 				APLimit(size),
 			),
 		}),
+		APSet(bson.M{
+			"Metadata": APOArrayElemAt("$Metadata", 0),
+		}),
+		APSet(bson.M{
+			"Metadata.TotalPages": "$Metadata",
+		}),
 		APAddFields(bson.M{
-			"Metadata.TotalElements": APOSize("$Content"),
-			"Metadata.TotalPages":    APOFloor(APODivide(APOSize("$Content"), size)),
-			"Metadata.Size":          APOMin(size, APOSubtract(APOSize("$Content"), size*page)),
-			"Metadata.Number":        page,
+			"Metadata.TotalPages": APOFloor(APODivide("$Metadata.TotalElements", size)),
+			"Metadata.Size":       APOMin(size, APOSubtract("$Metadata.TotalElements", size*page)),
+			"Metadata.Number":     page,
 		}),
 		APAddFields(bson.M{
 			"Metadata.Empty": APOEqual("$Metadata.Size", 0),
