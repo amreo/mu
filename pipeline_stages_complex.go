@@ -58,7 +58,9 @@ func APOptionalPagingStage(page int, size int) interface{} {
 			),
 		}),
 		APSet(bson.M{
-			"Metadata": APOArrayElemAt("$Metadata", 0),
+			"Metadata": APOIfNull(APOArrayElemAt("$Metadata", 0), bson.M{
+				"TotalElements": 0,
+			}),
 		}),
 		APSet(bson.M{
 			"Metadata.TotalPages": "$Metadata",
