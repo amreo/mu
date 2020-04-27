@@ -73,7 +73,7 @@ func APOptionalPagingStage(page int, size int) interface{} {
 		APAddFields(bson.M{
 			"Metadata.Empty": APOEqual("$Metadata.Size", 0),
 			"Metadata.First": page == 0,
-			"Metadata.Last":  APOEqual(page, APOSubtract("$Metadata.TotalPages", 1)),
+			"Metadata.Last":  APOGreaterOrEqual(page, APOSubtract("$Metadata.TotalPages", 1)),
 		}),
 	)
 }
