@@ -17,7 +17,6 @@ package mu
 
 import (
 	"regexp"
-	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -79,24 +78,51 @@ func APOptionalPagingStage(page int, size int) interface{} {
 }
 
 // APSearchFilterStage return a aggregation stage that filter the documents when any field match any keyword
-func APSearchFilterStage(fields []string, keywords []string) interface{} {
+func APSearchFilterStage(fields []interface{}, keywords []string) interface{} {
 	//Build the search pattern
 	quotedKeywords := []string{}
 	for _, k := range keywords {
 		quotedKeywords = append(quotedKeywords, regexp.QuoteMeta(k))
 	}
-	pattern := strings.Join(quotedKeywords, "|")
 
 	//Build the $or conditions
 	conditions := []interface{}{}
-	for _, f := range fields {
-		conditions = append(conditions, bson.M{f: bson.M{
-			"$regex": primitive.Regex{Pattern: pattern, Options: "i"},
-		}})
+	for _, q := range quotedKeywords {
+		matchKeywordConditions := []interface{}{}
+		for _, f := range fields {
+			matchKeywordConditions = append(matchKeywordConditions,
+				APOCond(
+					APOEqual(bson.M{
+						"$type": f,
+					}, "array"),
+					bson.M{
+						"$or": APOReduce(f, false,
+							APOOr(
+								"$$value",
+								bson.M{
+									"$regexMatch": bson.M{
+										"input": "$$this",
+										"regex": primitive.Regex{Pattern: q, Options: "i"},
+									},
+								},
+							),
+						),
+					},
+					bson.M{
+						"$regexMatch": bson.M{
+							"input": f,
+							"regex": primitive.Regex{Pattern: q, Options: "i"},
+						},
+					},
+				),
+			)
+		}
+
+		conditions = append(conditions, APOOr(matchKeywordConditions...))
 	}
 
-	//Return the matching stage
-	return APMatch(APOOr(conditions...))
+	// Return the matching stage
+	return APMatch(QOExpr(APOAnd(conditions...)))
 }
 
 // APGroupAndCountStages return some aggregation stagess that group whatFieldName by what and count the documents
