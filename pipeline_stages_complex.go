@@ -48,31 +48,31 @@ func APOptionalPagingStage(page int, size int) interface{} {
 
 	return MAPipeline(
 		APFacet(bson.M{
-			"Metadata": MAPipeline(
-				APCount("TotalElements"),
+			"metadata": MAPipeline(
+				APCount("totalElements"),
 			),
-			"Content": MAPipeline(
+			"content": MAPipeline(
 				APSkip(page*size),
 				APLimit(size),
 			),
 		}),
 		APSet(bson.M{
-			"Metadata": APOIfNull(APOArrayElemAt("$Metadata", 0), bson.M{
-				"TotalElements": 0,
+			"metadata": APOIfNull(APOArrayElemAt("$metadata", 0), bson.M{
+				"totalElements": 0,
 			}),
 		}),
 		APSet(bson.M{
-			"Metadata.TotalPages": "$Metadata",
+			"metadata.totalPages": "$metadata",
 		}),
 		APAddFields(bson.M{
-			"Metadata.TotalPages": APOFloor(APODivide("$Metadata.TotalElements", size)),
-			"Metadata.Size":       APOMin(size, APOSubtract("$Metadata.TotalElements", size*page)),
-			"Metadata.Number":     page,
+			"metadata.totalPages": APOFloor(APODivide("$metadata.totalElements", size)),
+			"metadata.size":       APOMin(size, APOSubtract("$metadata.totalElements", size*page)),
+			"metadata.number":     page,
 		}),
 		APAddFields(bson.M{
-			"Metadata.Empty": APOEqual("$Metadata.Size", 0),
-			"Metadata.First": page == 0,
-			"Metadata.Last":  APOGreaterOrEqual(page, APOSubtract("$Metadata.TotalPages", 1)),
+			"metadata.empty": APOEqual("$metadata.size", 0),
+			"metadata.first": page == 0,
+			"metadata.last":  APOGreaterOrEqual(page, APOSubtract("$metadata.totalPages", 1)),
 		}),
 	)
 }
